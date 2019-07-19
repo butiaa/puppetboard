@@ -1,4 +1,4 @@
-FROM python:2.7-alpine
+FROM python:3.6-alpine
 
 ENV PUPPETBOARD_PORT 80
 EXPOSE 80
@@ -12,4 +12,4 @@ RUN pip install -r requirements-docker.txt
 
 COPY . /usr/src/app
 
-CMD gunicorn -b 0.0.0.0:${PUPPETBOARD_PORT} --access-logfile=/dev/stdout puppetboard.app:app
+CMD gunicorn -b 0.0.0.0:${PUPPETBOARD_PORT} --workers="${PUPPETBOARD_WORKERS:-1}" -e SCRIPT_NAME="${PUPPETBOARD_URL_PREFIX:-}" --access-logfile=- puppetboard.app:app

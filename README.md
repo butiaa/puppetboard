@@ -9,13 +9,14 @@ Puppetboard is a web interface to [PuppetDB](https://puppet.com/docs/puppetdb/la
 
 Puppetboard relies on the [pypuppetdb](https://pypi.python.org/pypi/pypuppetdb) library to fetch data from PuppetDB and is built with the help of the [Flask](http://flask.pocoo.org) microframework.
 
-As of version 0.1.0 and higher, Puppetboard **requires** PuppetDB 3. Version 0.3.0 has been tested with PuppetDB versions 3 through 5.
+As of version 0.1.0 and higher, Puppetboard **requires** PuppetDB 3. Version 0.3.0 has been tested with PuppetDB versions 3 through 6.
 
 At the current time of writing, Puppetboard supports the following Python versions:
 
- * Python 2.6
- * Python 2.7
- * Python 3.6
+* Python 2.7
+* Python 3.5
+* Python 3.6
+* Python 3.7
 
 ![View of a node](screenshots/overview.png)
 
@@ -143,6 +144,9 @@ $ docker run -it -p 9080:80 -v /etc/puppetlabs/puppet/ssl:/etc/puppetlabs/puppet
   puppetboard
 ```
 
+To set a URL prefix you can use the optional `PUPPETBOARD_URL_PREFIX`
+environment variable.
+
 ### Development
 
 If you wish to hack on Puppetboard you should fork/clone the Github repository and then install the requirements through:
@@ -191,7 +195,8 @@ Other settings that might be interesting in no particular order:
 -   `PUPPETDB_TIMEOUT`: Defaults to 20 seconds but you might need to increase this value. It depends on how big the results are when querying PuppetDB. This behaviour will change in a future release when pagination will be introduced.
 -   `UNRESPONSIVE_HOURS`: The amount of hours since the last check-in after which a node is considered unresponsive.
 -   `LOGLEVEL`: A string representing the loglevel. It defaults to `'info'` but can be changed to `'warning'` or `'critical'` for less verbose logging or `'debug'` for more information.
--   `ENABLE_QUERY`: Defaults to `True` causing a Query tab to show up in the web interface allowing users to write and execute arbitrary queries against a set of endpoints in PuppetDB. Change this to `False` to disable this.
+-   `ENABLE_QUERY`: Defaults to `True` causing a Query tab to show up in the web interface allowing users to write and execute arbitrary queries against a set of endpoints in PuppetDB. Change this to `False` to disable this. See `ENABLED_QUERY_ENDPOINTS` to fine-tune which endpoints are allowed.
+-   `ENABLED_QUERY_ENDPOINTS`: If `ENABLE_QUERY` is `True`, allow to fine tune the endpoints of PuppetDB APIs that can be queried. It must be a list of strings of PuppetDB endpoints for which the query is enabled. See the `QUERY_ENDPOINTS` constant in the `puppetboard.app` module for a list of the available endpoints.
 -   `GRAPH_TYPE`: Specify the type of graph to display.   Default is
     pie, other good option is donut.   Other choices can be found here:
     \_C3JS\_documentation\`
@@ -639,4 +644,3 @@ Screenshots
 ![Query view](screenshots/query.png)
 
 ![Error page](screenshots/broken.png)
-
